@@ -1,8 +1,36 @@
 from processing_py import *
 import classes
+import random
+
+CREATURES_N = 10
+WATER_N = 40
+FIRE_N = 30
+DIAMOND_N = 30
+app = App(700,700)
+app.Mansion = classes.Mansion(app)
+app.entities = {classes.Types.MANSION: [app.Mansion], classes.Types.CREATURE: [], classes.Types.WATER: [], classes.Types.DIAMOND: [], classes.Types.FIRE: []}
+app.ellipseMode('RADIUS')
 
 def addEntity(e):
     app.entities[e.type].append(e)
+
+def genEntity(type, r, x, y, q = 1):
+    a = [classes.Creature, classes.Water, classes.Diamond, classes.Fire]
+    for i in range(q):
+        if r == True:
+            x = random.randrange(app.width)
+            y = random.randrange(app.height)
+        if type == classes.Mansion:
+            addEntity(classes.Mansion(app))
+        else:
+            asd = a[type](x, y)
+            addEntity(asd)
+
+def genMap():
+    genEntity(classes.Types.CREATURE, True, 0, 0, CREATURES_N)
+    genEntity(classes.Types.DIAMOND, True, 0, 0, DIAMOND_N)
+    genEntity(classes.Types.FIRE, True, 0, 0, FIRE_N)
+    genEntity(classes.Types.WATER, True, 0, 0, WATER_N)
 
 def draw():
     app.background(0,0,0)
@@ -12,14 +40,7 @@ def draw():
             e.draw(app)
     app.redraw()
 
-app = App(600,600)
-app.Mansion = classes.Mansion(app)
-app.entities = {classes.Types.MANSION: [app.Mansion], classes.Types.CREATURE: [], classes.Types.WATER: [], classes.Types.DIAMOND: [], classes.Types.FIRE: []}
-addEntity(classes.Creature(app.width/2 + 50, app.height/2 + 50))
-addEntity(classes.Water(app.width/2, app.height/2))
-addEntity(classes.Diamond(app.width/2 + 50, app.height/2))
-addEntity(classes.Fire(app.width/2, app.height/2 + 50))
-app.ellipseMode('RADIUS')
+genMap()
 
 while(True):
     draw()

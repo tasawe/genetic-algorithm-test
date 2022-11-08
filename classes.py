@@ -14,11 +14,11 @@ class Colors():
     MANSION = 0xFFCC0099
 
 class Types():
-    CREATURE = 1
-    WATER = 2
-    DIAMOND = 3
-    FIRE = 4
-    MANSION = 5
+    CREATURE = 0
+    WATER = 1
+    DIAMOND = 2
+    FIRE = 3
+    MANSION = 4
 
 class Neuron():
     def __init__(self, inputs):
@@ -48,19 +48,19 @@ class Entity():
 
 class Water(Entity):
     def __init__(self, x, y):
-        self.radius = 25
+        self.radius = 20
         self.color = Colors.WATER
         super().__init__(x, y, self.radius, self.color, Types.WATER)
 
 class Diamond(Entity):
     def __init__(self, x, y):
-        self.radius = 20
+        self.radius = 15
         self.color = Colors.DIAMOND
         super().__init__(x, y, self.radius, self.color, Types.DIAMOND)
 
 class Fire(Entity):
     def __init__(self, x, y):
-        self.radius = 25
+        self.radius = 20
         self.color = Colors.FIRE
         super().__init__(x, y, self.radius, self.color, Types.FIRE)
 
@@ -81,7 +81,7 @@ class Mansion(Entity):
 
 class Creature(Entity):
     def __init__(self, x, y):
-        self.radius = 30
+        self.radius = 15
         self.caughtDiamonds = 0
         self.carriesDiamond = False
         self.color = Colors.WHITE
