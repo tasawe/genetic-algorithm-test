@@ -13,6 +13,13 @@ class Colors():
     FIRE = 0xFFFF6600
     MANSION = 0xFFCC0099
 
+class Types():
+    CREATURE = 1
+    WATER = 2
+    DIAMOND = 3
+    FIRE = 4
+    MANSION = 5
+
 class Neuron():
     def __init__(self, inputs):
         self.inputs = inputs
@@ -23,11 +30,12 @@ class Neuron():
         return r
 
 class Entity():
-    def __init__(self, x, y, radius, color):
+    def __init__(self, x, y, radius, color, type):
         self.x = x
         self.y = y
         self.radius = radius
         self.color = color
+        self.type = type
     def update(self, app):
         pass
     def inside(self, x, y):
@@ -42,25 +50,26 @@ class Water(Entity):
     def __init__(self, x, y):
         self.radius = 25
         self.color = Colors.WATER
-        super().__init__(x, y, self.radius, self.color)
+        super().__init__(x, y, self.radius, self.color, Types.WATER)
 
 class Diamond(Entity):
     def __init__(self, x, y):
         self.radius = 20
         self.color = Colors.DIAMOND
-        super().__init__(x, y, self.radius, self.color)
+        super().__init__(x, y, self.radius, self.color, Types.DIAMOND)
 
 class Fire(Entity):
     def __init__(self, x, y):
         self.radius = 25
         self.color = Colors.FIRE
-        super().__init__(x, y, self.radius, self.color)
+        super().__init__(x, y, self.radius, self.color, Types.FIRE)
 
 class Mansion(Entity):
     def __init__(self, app):
         self.x = app.width/2
         self.y = app.height/2
         self.color = Colors.MANSION
+        self.type = Types.MANSION
         self.radius = 90
         self.stroke = 5
         self.innerRadius = self.radius - self.stroke
@@ -73,12 +82,12 @@ class Mansion(Entity):
 class Creature(Entity):
     def __init__(self, x, y):
         self.radius = 30
+        self.caughtDiamonds = 0
         self.carriesDiamond = False
         self.color = Colors.WHITE
-        super().__init__(x, y, self.radius, self.color)
+        super().__init__(x, y, self.radius, self.color, Types.CREATURE)
     def update(self, app):
         self.color = Colors.YELLOW if self.carriesDiamond else Colors.WHITE
-        if (self.inside(app.mouseX, app.mouseY)):
-            self.carriesDiamond = True
-        else:
+        if (app.Mansion.inside(self.x, self.y)):
             self.carriesDiamond = False
+            self.caughtDiamonds += 1
