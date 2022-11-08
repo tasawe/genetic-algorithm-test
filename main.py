@@ -3,13 +3,12 @@ import classes
 import random
 
 CREATURES_N = 10
-WATER_N = 40
-FIRE_N = 30
+WATER_N = 30
+FIRE_N = 10
 DIAMOND_N = 30
 app = App(700,700)
 app.Mansion = classes.Mansion(app)
 app.entities = {classes.Types.MANSION: [app.Mansion], classes.Types.CREATURE: [], classes.Types.WATER: [], classes.Types.DIAMOND: [], classes.Types.FIRE: []}
-app.ellipseMode('RADIUS')
 
 def addEntity(e):
     app.entities[e.type].append(e)
@@ -34,6 +33,7 @@ def genMap():
 
 def draw():
     app.background(0,0,0)
+    app.ellipseMode('RADIUS')
     for type in app.entities:
         for e in app.entities[type]:
             e.update(app)
