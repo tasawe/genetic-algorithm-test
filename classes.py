@@ -1,5 +1,6 @@
 from processing_py import *
 from math import sqrt
+import random
 
 class Colors():
     RED = 0xFFFF0000
@@ -25,9 +26,17 @@ class Neuron():
         self.inputs = inputs
     def getOutput(self):
         r = 0
-        for (input, weight) in self.inputs:
-            r += input * weight
+        for input in self.inputs:
+            r += input() * self.inputs[input]
         return r
+    def genRandomInputWeights(creature, layer):
+        if layer == 1:
+            return {creature.getWater: random.randrange(10), creature.getFire: random.randrange(10), creature.getMansion: random.randrange(10), creature.getDiamond: random.randrange(10), creature.getHasDiamond: random.randrange(10)}
+        elif layer == 2:
+            r = {}
+            for n in creature.neuronsLayer1:
+                r[n.getOutput] = random.randrange(10)
+            return r
 
 class Entity():
     def __init__(self, x, y, radius, color, type):
@@ -86,6 +95,22 @@ class Creature(Entity):
         self.carriesDiamond = False
         self.color = Colors.WHITE
         super().__init__(x, y, self.radius, self.color, Types.CREATURE)
+        self.neuronsLayer1 = []
+        self.neuronsLayer2 = []
+        for i in range(4):
+            self.neuronsLayer1.append(Neuron(Neuron.genRandomInputWeights(self, 1)))
+        for i in range(3):
+            self.neuronsLayer2.append(Neuron(Neuron.genRandomInputWeights(self, 2)))
+    def getWater():
+        pass
+    def getFire():
+        pass
+    def getMansion():
+        pass
+    def getDiamond():
+        pass
+    def getHasDiamond(self):
+        return int(self.carriesDiamond)
     def update(self, app):
         self.color = Colors.YELLOW if self.carriesDiamond else Colors.WHITE
         if (app.Mansion.inside(self.x, self.y)):
