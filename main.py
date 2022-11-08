@@ -13,12 +13,16 @@ app.entities = {classes.Types.MANSION: [app.Mansion], classes.Types.CREATURE: []
 def addEntity(e):
     app.entities[e.type].append(e)
 
-def genEntity(type, r, x, y, q = 1):
+def genEntity(type, r, x, y, q = 1, outsideMansion = False):
     a = [classes.Creature, classes.Water, classes.Diamond, classes.Fire]
     for i in range(q):
         if r == True:
             x = random.randrange(app.width)
             y = random.randrange(app.height)
+            if outsideMansion:
+                while app.Mansion.inside(x, y):
+                    x = random.randrange(app.width)
+                    y = random.randrange(app.height)
         if type == classes.Mansion:
             addEntity(classes.Mansion(app))
         else:
@@ -26,10 +30,10 @@ def genEntity(type, r, x, y, q = 1):
             addEntity(asd)
 
 def genMap():
-    genEntity(classes.Types.CREATURE, True, 0, 0, CREATURES_N)
-    genEntity(classes.Types.DIAMOND, True, 0, 0, DIAMOND_N)
-    genEntity(classes.Types.FIRE, True, 0, 0, FIRE_N)
-    genEntity(classes.Types.WATER, True, 0, 0, WATER_N)
+    genEntity(classes.Types.CREATURE, False, app.Mansion.x, app.Mansion.y, CREATURES_N)
+    genEntity(classes.Types.DIAMOND, True, 0, 0, DIAMOND_N, True)
+    genEntity(classes.Types.FIRE, True, 0, 0, FIRE_N, True)
+    genEntity(classes.Types.WATER, True, 0, 0, WATER_N, True)
 
 def draw():
     app.background(0,0,0)
